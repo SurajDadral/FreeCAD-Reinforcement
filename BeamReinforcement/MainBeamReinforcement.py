@@ -456,29 +456,25 @@ class _BeamReinforcementDialog:
 
     def stirrupsLeftCoverChanged(self):
         # Set right/top/bottom cover equal to left cover
-        left_cover = self.stirrups_widget.stirrups_leftCover.text()
-        self.stirrups_widget.stirrups_rightCover.setText(left_cover)
-        self.stirrups_widget.stirrups_topCover.setText(left_cover)
-        self.stirrups_widget.stirrups_bottomCover.setText(left_cover)
+        if self.stirrups_widget.stirrups_allCoversEqual.isChecked():
+            left_cover = self.stirrups_widget.stirrups_leftCover.text()
+            self.stirrups_widget.stirrups_rightCover.setText(left_cover)
+            self.stirrups_widget.stirrups_topCover.setText(left_cover)
+            self.stirrups_widget.stirrups_bottomCover.setText(left_cover)
 
     def stirrupsAllCoversEqualClicked(self):
         if self.stirrups_widget.stirrups_allCoversEqual.isChecked():
-            # Diable fields for right/top/bottom cover
+            # Disable fields for right/top/bottom cover
             self.stirrups_widget.stirrups_rightCover.setEnabled(False)
             self.stirrups_widget.stirrups_topCover.setEnabled(False)
             self.stirrups_widget.stirrups_bottomCover.setEnabled(False)
             # Set right/top/bottom cover equal to left cover
             self.stirrupsLeftCoverChanged()
-            self.stirrups_widget.stirrups_leftCover.textChanged.connect(
-                self.stirrupsLeftCoverChanged
-            )
         else:
+            # Enable fields for right/top/bottom cover
             self.stirrups_widget.stirrups_rightCover.setEnabled(True)
             self.stirrups_widget.stirrups_topCover.setEnabled(True)
             self.stirrups_widget.stirrups_bottomCover.setEnabled(True)
-            self.stirrups_widget.stirrups_leftCover.textChanged.disconnect(
-                self.stirrupsLeftCoverChanged
-            )
 
     def stirrupsNumberRadioClicked(self):
         """This function enable stirrups_number field and disable
@@ -1725,7 +1721,7 @@ def editDialog(vobj):
     if len(vobj.Object.ReinforcementGroups) == 0:
         showWarning("Nothing to edit. You have deleted all rebar groups.")
         return
-    for i, rebar_group in enumerate(vobj.Object.ReinforcementGroups):
+    for rebar_group in vobj.Object.ReinforcementGroups:
         # Check if stirrups group exists
         if hasattr(rebar_group, "Stirrups"):
             # Check if Stirrups exists
@@ -1914,7 +1910,14 @@ def setShearRebarsData(obj, vobj):
                     elif hasattr(shear_rebars_group, "RightRebars"):
                         RightRebarsGroup = shear_rebars_group
                 break
-    if LeftRebarsGroup:
+    if not LeftRebarsGroup:
+        obj.left_reinforcement_widget.numberDiameterOffset.setText("")
+        obj.left_reinforcement_widget.rebarType.setText("")
+        obj.left_reinforcement_widget.hookOrientation.setText("")
+        obj.left_reinforcement_widget.hookExtension.setText("")
+        obj.left_reinforcement_widget.LRebarRounding.setText("")
+        obj.left_reinforcement_widget.rebarSpacing.setText("")
+    else:
         obj.left_reinforcement_widget.numberDiameterOffset.setText(
             str(LeftRebarsGroup.NumberDiameterOffset)
         )
@@ -1958,7 +1961,14 @@ def setShearRebarsData(obj, vobj):
         obj.left_reinforcement_widget.hookOrientationEditButton.setEnabled(True)
         obj.left_reinforcement_widget.hookExtensionEditButton.setEnabled(True)
         obj.left_reinforcement_widget.LRebarRoundingEditButton.setEnabled(True)
-    if RightRebarsGroup:
+    if not RightRebarsGroup:
+        obj.right_reinforcement_widget.numberDiameterOffset.setText("")
+        obj.right_reinforcement_widget.rebarType.setText("")
+        obj.right_reinforcement_widget.hookOrientation.setText("")
+        obj.right_reinforcement_widget.hookExtension.setText("")
+        obj.right_reinforcement_widget.LRebarRounding.setText("")
+        obj.right_reinforcement_widget.rebarSpacing.setText("")
+    else:
         obj.right_reinforcement_widget.numberDiameterOffset.setText(
             str(RightRebarsGroup.NumberDiameterOffset)
         )

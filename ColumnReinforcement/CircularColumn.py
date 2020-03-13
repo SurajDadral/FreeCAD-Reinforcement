@@ -33,7 +33,12 @@ import FreeCAD
 import ArchCommands
 
 from HelicalRebar import makeHelicalRebar, editHelicalRebar
-from Rebarfunc import getFaceNumber, getParametersOfFace
+from Rebarfunc import (
+    getFaceNumber,
+    getParametersOfFace,
+    setGroupProperties,
+    setGroupPropertiesValues,
+)
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -112,7 +117,7 @@ def makeReinforcement(
         else:
             print("Error: Pass structure and facename arguments")
             return
-    FacePRM = getParametersOfFace(structure, facename, False)
+    FacePRM = getParametersOfFace(structure, facename, sketch=False)
     if not FacePRM:
         FreeCAD.Console.PrintError(
             "Cannot identified shape or from which base object"
@@ -164,7 +169,7 @@ def makeReinforcement(
             ("Number", math.ceil(360 / number_angle_value))
         )
         properties_values.append(("Angle", number_angle_value))
-    CircularColumnReinforcementRebarGroup.setPropertiesValues(
+    setGroupPropertiesValues(
         properties_values,
         CircularColumnReinforcementRebarGroup.main_rebars_group,
     )
@@ -222,9 +227,11 @@ def makeStraightRebars(
             line.Start = points[0]
             line.End = points[1]
         main_rebars_list.append(
-            Arch.makeRebar(structure, line, dia_of_main_rebars, 1)
+            Arch.makeRebar(structure, line, dia_of_main_rebars, amount=1)
         )
         main_rebars_list[-1].Label = "StraightRebar"
+        main_rebars_list[-1].OffsetStart = 0
+        main_rebars_list[-1].OffsetEnd = 0
 
     return main_rebars_list
 
@@ -345,7 +352,7 @@ class _CircularColumnReinforcementRebarGroup:
         properties.append(
             ("App::PropertyLinkList", "RebarGroups", "List of rebar groups", 1)
         )
-        self.setProperties(properties, self.rebar_group)
+        setGroupProperties(properties, self.rebar_group)
         self.rebar_group.ColumnType = "CircularColumn"
         self.rebar_group.RebarGroups = [
             self.helical_rebar_group,
@@ -362,7 +369,7 @@ class _CircularColumnReinforcementRebarGroup:
                 1,
             )
         )
-        self.setProperties(properties, self.helical_rebar_group)
+        setGroupProperties(properties, self.helical_rebar_group)
 
         # Add properties to main_rebars_group object
         properties = []
@@ -407,23 +414,9 @@ class _CircularColumnReinforcementRebarGroup:
                 1,
             )
         )
-        self.setProperties(properties, self.main_rebars_group)
+        setGroupProperties(properties, self.main_rebars_group)
 
         self.Object = self.rebar_group
-
-    def setProperties(self, properties, group_obj):
-        for prop in properties:
-            group_obj.addProperty(
-                prop[0],
-                prop[1],
-                "RebarDialog",
-                QT_TRANSLATE_NOOP("App::Property", prop[2]),
-            )
-            group_obj.setEditorMode(prop[1], prop[3])
-
-    def setPropertiesValues(self, properties_values, group_obj):
-        for prop in properties_values:
-            setattr(group_obj, prop[0], prop[1])
 
     def addHelicalRebars(self, helical_rebars_list):
         """Add helical rebars to helical_rebar_group object."""
