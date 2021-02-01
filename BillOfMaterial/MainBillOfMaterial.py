@@ -27,7 +27,7 @@ __url__ = "https://www.freecadweb.org"
 
 from collections import OrderedDict
 from pathlib import Path
-from typing import OrderedDict as OrderedDictType, Literal
+from typing import OrderedDict as OrderedDictType
 
 import FreeCAD
 import FreeCADGui
@@ -39,6 +39,12 @@ from .BillOfMaterial_SVG import makeBillOfMaterialSVG
 from .BillOfMaterial_Spreadsheet import makeBillOfMaterial
 from .UnitLineEdit import UnitLineEdit
 from .config import COLUMN_HEADERS
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 class _BillOfMaterialDialog:

@@ -28,7 +28,6 @@ __url__ = "https://www.freecadweb.org"
 from typing import (
     Dict,
     List,
-    Literal,
     Optional,
     OrderedDict as OrderedDictType,
     Tuple,
@@ -52,6 +51,12 @@ from RebarShapeCutList.RebarShapeCutListfunc import (
     getRebarShapeCutList,
 )
 from SVGfunc import getSVGRootElement, getSVGRectangle, getSVGDataCell
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 def getBarBendingSchedule(

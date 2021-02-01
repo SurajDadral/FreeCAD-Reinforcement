@@ -28,7 +28,6 @@ __url__ = "https://www.freecadweb.org"
 from typing import (
     Optional,
     Dict,
-    Literal,
     List,
     OrderedDict as OrderedDictType,
     Union,
@@ -46,6 +45,12 @@ from .BOMfunc import (
     getBaseRebar,
     getHostReinforcementsDict,
 )
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 def addSheetHeaders(

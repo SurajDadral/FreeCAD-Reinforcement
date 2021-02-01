@@ -27,7 +27,7 @@ __url__ = "https://www.freecadweb.org"
 
 import math
 from pathlib import Path
-from typing import Literal, Tuple, List
+from typing import Tuple, List
 
 import ArchCommands
 import FreeCAD
@@ -46,6 +46,12 @@ from Rebarfunc import (
     check_selected_face,
     facenormalDirection,
 )
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 def getpointsOfBentShapeRebar(

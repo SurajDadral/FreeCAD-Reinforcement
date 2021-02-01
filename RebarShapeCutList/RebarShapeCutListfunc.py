@@ -26,7 +26,7 @@ __author__ = "Suraj"
 __url__ = "https://www.freecadweb.org"
 
 import math
-from typing import Union, List, Tuple, Optional, Literal
+from typing import Union, List, Tuple, Optional
 from xml.dom import minidom
 from xml.etree import ElementTree
 
@@ -51,6 +51,12 @@ from SVGfunc import (
     getSVGTextElement,
     getSVGRectangle,
 )
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 def getBaseRebarsList(

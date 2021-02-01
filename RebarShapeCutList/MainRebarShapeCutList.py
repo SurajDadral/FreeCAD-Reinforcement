@@ -26,7 +26,7 @@ __author__ = "Suraj"
 __url__ = "https://www.freecadweb.org"
 
 from pathlib import Path
-from typing import Tuple, Union, List, Literal
+from typing import Tuple, Union, List
 
 import Draft
 import FreeCAD
@@ -40,6 +40,12 @@ from RebarShapeCutList.RebarShapeCutListfunc import (
     getRebarShapeCutList,
     getBaseRebarsList,
 )
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 class _RebarShapeCutListDialog:

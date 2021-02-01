@@ -29,7 +29,6 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import (
     Dict,
-    Literal,
     Optional,
     OrderedDict as OrderedDictType,
     Tuple,
@@ -46,6 +45,12 @@ from BillOfMaterial.BOMfunc import getReinforcementRebarObjects
 from BillOfMaterial.UnitLineEdit import UnitLineEdit
 from BillOfMaterial.config import COLUMN_HEADERS
 from .BBSfunc import getBarBendingSchedule
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 class _BarBendingScheduleDialog:

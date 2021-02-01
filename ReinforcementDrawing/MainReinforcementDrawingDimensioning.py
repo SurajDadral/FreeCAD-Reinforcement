@@ -26,7 +26,7 @@ __author__ = "Suraj"
 __url__ = "https://www.freecadweb.org"
 
 from pathlib import Path
-from typing import Union, Literal, List, Tuple, Optional
+from typing import Union, List, Tuple, Optional
 
 import FreeCAD
 import FreeCADGui
@@ -73,6 +73,12 @@ from .config import (
     DIMENSION_SINGLE_REBAR_TEXT_POSITION_TYPE,
     DIMENSION_MULTI_REBAR_TEXT_POSITION_TYPE,
 )
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 class _ReinforcementDrawingDimensioningDialog:

@@ -25,11 +25,17 @@ __title__ = "Bill Of Material Helper Functions"
 __author__ = "Suraj"
 __url__ = "https://www.freecadweb.org"
 
-from typing import Dict, Optional, List, Literal
+from typing import Dict, Optional, List
+
+import Draft
+import FreeCAD
 from PySide2 import QtGui
 
-import FreeCAD
-import Draft
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 def getBaseRebar(reinforcement_obj):

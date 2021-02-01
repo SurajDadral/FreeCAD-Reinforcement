@@ -28,7 +28,7 @@ __url__ = "https://www.freecadweb.org"
 
 from collections import OrderedDict
 from pathlib import Path
-from typing import Dict, Literal, OrderedDict as OrderedDictType, Union
+from typing import Dict, OrderedDict as OrderedDictType, Union
 
 import FreeCAD
 
@@ -51,6 +51,12 @@ from .config import (
     BOM_TABLE_SVG_MAX_HEIGHT,
     TEMPLATE_FILE,
 )
+
+try:
+    from typing import Literal
+except ImportError:
+    # workaround for typing.Literal in python < 3.8
+    from typing_literal import Literal
 
 
 class BOMPreferences:
